@@ -2,11 +2,18 @@
 import pandas as pd
 import requests
 
+# sending request to the website to collect the data 
 url = "https://api.themoviedb.org/3/movie/popular?api_key="
 response = requests.get(url)
 
+# creating enpty Data_Frame to store fetched data
 df = pd.DataFrame() 
 
+# the Data is too much ~1.15 million so we cannot fetch that much data from API😭😭 and
+# it taking a lot of computation power and storage cuz there is a high chance that the list
+# reached it's limit.
+
+# So we are using for loop to fetch the data in the chunks, so we collected ~~1.15lakh data
 for i in range(1,1001):
   response = requests.get("https://api.themoviedb.org/3/movie/popular?api_key=")
   a_temp_df = pd.DataFrame(response.json()['results'])
@@ -37,4 +44,5 @@ for i in range(5001,5762):
   f_temp_df = pd.DataFrame(response.json()['results'])
   df = pd.concat([df, f_temp_df], ignore_index=True)
 
+# Now saving the into the local folder in csv format 
 df.to_csv("TMDB_movies.csv")
